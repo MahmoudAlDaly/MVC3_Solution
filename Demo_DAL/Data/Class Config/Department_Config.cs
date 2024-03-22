@@ -15,6 +15,7 @@ namespace Demo_DAL.Data.Class_Config
         {
             builder.ToTable("Departments");
 
+            builder.HasKey(d=> d.ID);
             builder.Property(d=> d.ID).UseIdentityColumn(10,10);
 
             builder.Property(d => d.Code).HasColumnType("nvarchar")

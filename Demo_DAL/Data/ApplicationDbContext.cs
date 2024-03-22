@@ -9,14 +9,19 @@ using System.Threading.Tasks;
 
 namespace Demo_DAL.Data
 {
-    internal class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext>options):base(options)
         {
-            //base.OnConfiguring(optionsBuilder);
-
-            optionsBuilder.UseSqlServer("server = . ; Database = MVCApplication ; Trusted_Connection = True");
+            
         }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    //base.OnConfiguring(optionsBuilder);
+
+        //    optionsBuilder.UseSqlServer("server = . ; Database = MVCApplication ; Trusted_Connection = True");
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
