@@ -16,7 +16,8 @@ namespace Demo_PL.Controllers
         //Department/index
         public IActionResult Index()
         {
-            return View();
+            var dep = Repository.GetAll();
+            return View(dep);
         }
     }
 }
