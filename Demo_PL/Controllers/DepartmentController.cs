@@ -13,11 +13,34 @@ namespace Demo_PL.Controllers
             Repository = repository;
         }
 
-        //Department/index
+        // /Department/index
         public IActionResult Index()
         {
             var dep = Repository.GetAll();
             return View(dep);
+        }
+
+        // /Department/Create
+        [HttpGet]  //default
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // /Department/Create
+        [HttpPost]  
+        public IActionResult Create(Department department)
+        {
+            if (ModelState.IsValid)
+            {
+                var count = Repository.Add(department);
+                if (count > 0)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            return View(department);
         }
     }
 }
