@@ -42,5 +42,25 @@ namespace Demo_PL.Controllers
 
             return View(department);
         }
+
+        // /Department/Details
+        // /Department/Details/10
+        public IActionResult Details(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return BadRequest(); //400
+            }
+            else
+            {
+                var department = Repository.Get(id.Value);
+
+                if (department == null)
+                {
+                    return NotFound();    //404
+                }
+                return View(department);
+            }
+        }
     }
 }
