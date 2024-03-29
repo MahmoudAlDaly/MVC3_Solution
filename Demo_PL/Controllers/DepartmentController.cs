@@ -1,16 +1,20 @@
 ﻿using Demo_BLL.Interfaces;
 using Demo_DAL.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+using System;
 
 namespace Demo_PL.Controllers
 {
     public class DepartmentController : Controller
     {
         private readonly IDepartmentRepository Repository;
-
-        public DepartmentController(IDepartmentRepository repository)
+        private readonly IWebHostEnvironment Env;
+        public DepartmentController(IDepartmentRepository repository, IWebHostEnvironment env)
         {
             Repository = repository;
+            Env = env;
         }
 
         // /Department/index
@@ -45,7 +49,8 @@ namespace Demo_PL.Controllers
 
         // /Department/Details
         // /Department/Details/10
-        public IActionResult Details(int? id)
+        [HttpGet]
+        public IActionResult Details(int? id,string ViewName = "Details")
         {
             if (!id.HasValue)
             {
@@ -59,8 +64,50 @@ namespace Demo_PL.Controllers
                 {
                     return NotFound();    //404
                 }
+                return View(ViewName,department);
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult Edit(string ViewName,int? id)
+        {
+            return Details(id, "Edit");
+        }
+
+        [HttpPost]
+        public IActionResult Edit([FromRoute]int id,Department department)
+        {
+            if (id != department.ID)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
                 return View(department);
             }
+
+            try
+            {
+                Repository.Update(department);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+
+                if (Env.IsDevelopment())
+                {
+                    ModelState.AddModelError(string.Empty,ex.Message);
+                }
+               
+                    ModelState.AddModelError(string.Empty, "updating Error");
+                    return View(department);
+                
+            }
+
+            
         }
     }
 }
