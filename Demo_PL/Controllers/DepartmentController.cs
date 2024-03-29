@@ -110,5 +110,34 @@ namespace Demo_PL.Controllers
 
             
         }
+
+
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            return Details(id, "Delete");
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Department department)
+        {
+            try
+            {
+                Repository.Delete(department);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                if (Env.IsDevelopment())
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
+
+                ModelState.AddModelError(string.Empty, "Deleteing Error");
+                return View(department);
+
+            }
+            
+        }
     }
 }
