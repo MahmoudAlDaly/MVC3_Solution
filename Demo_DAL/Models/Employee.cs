@@ -25,13 +25,14 @@ namespace Demo_DAL.Models
         [EnumMember(Value = "Part Time")]
         PartTime = 2,
     }
-    public class Employee
+    public class Employee :ModelBase
     {
         [Required]
         [MaxLength(100,ErrorMessage = "Max Length 100 Char")]
         [MinLength(5,ErrorMessage = "Max Length 2 Char")]
-        public int ID { get; set; }
         public string Name { get; set; }
+
+
         [Range(22,30)]
         public int Age { get; set; }
         public string Address { get; set; }

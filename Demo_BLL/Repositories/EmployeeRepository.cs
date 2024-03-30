@@ -10,54 +10,18 @@ using System.Threading.Tasks;
 
 namespace Demo_BLL.Repositories
 {
-    public class EmployeeRepository : IEmployeeRepository
+    public class EmployeeRepository : GenericRepository<Employee>, IEmployeeRepository
     {
-        private readonly ApplicationDbContext DbContext;
+        //private readonly ApplicationDbContext DbContext;
 
-
-        public EmployeeRepository(ApplicationDbContext dbContext)
+        public EmployeeRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
-            DbContext = dbContext;
-        }
-        public Employee Get(int id)
-        {
-            #region MyRegion
-            //var department = DbContext.Departments.Local.Where(d => d.ID == id).FirstOrDefault();
-
-            //if (department == null)
-            //{
-            //    DbContext.Departments.Where(d => d.ID == id).FirstOrDefault();
-            //}
-
-            //return department; 
-            #endregion
-
-            return DbContext.Employees.Find(id);
-
+            //DbContext = dbContext;
         }
 
-
-        public IEnumerable<Employee> GetAll()
+        public IQueryable<Employee> GetEmployeesByAddress(string address)
         {
-            return DbContext.Employees.AsNoTracking().ToList();
-        }
-
-        public int Add(Employee Entity)
-        {
-            DbContext.Employees.Add(Entity);
-            return DbContext.SaveChanges();
-        }
-
-        public int Update(Employee Entity)
-        {
-            DbContext.Employees.Update(Entity);
-            return DbContext.SaveChanges();
-        }
-
-        public int Delete(Employee Entity)
-        {
-            DbContext.Employees.Remove(Entity);
-            return DbContext.SaveChanges();
+            return DbContext.Employees.Where(e => e.Address.ToLower() == address.ToLower());
         }
     }
 }

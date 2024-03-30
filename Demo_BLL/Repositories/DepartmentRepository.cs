@@ -10,55 +10,61 @@ using System.Threading.Tasks;
 
 namespace Demo_BLL.Repositories
 {
-    public class DepartmentRepository : IDepartmentRepository
+    public class DepartmentRepository : GenericRepository<Department> ,IDepartmentRepository
     {
         private readonly ApplicationDbContext DbContext;
 
+        #region MyRegion
+        //public DepartmentRepository(ApplicationDbContext dbContext)
+        //{
+        //    DbContext = dbContext;
+        //}
+        //public Department Get(int id)
+        //{
+        //    //var department = DbContext.Departments.Local.Where(d => d.ID == id).FirstOrDefault();
 
-        public DepartmentRepository(ApplicationDbContext dbContext)
+        //    //if (department == null)
+        //    //{
+        //    //    DbContext.Departments.Where(d => d.ID == id).FirstOrDefault();
+        //    //}
+
+        //    //return department;
+
+        //    return DbContext.Departments.Find(id);
+
+        //}
+
+
+        //public IEnumerable<Department> GetAll()
+        //{
+        //    return DbContext.Departments.AsNoTracking().ToList();
+        //}
+
+        //public int Add(Department Entity)
+        //{
+        //    DbContext.Departments.Add(Entity);
+        //    return DbContext.SaveChanges();
+        //}
+
+        //public int Update(Department Entity)
+        //{
+        //    DbContext.Departments.Update(Entity);
+        //    return DbContext.SaveChanges();
+        //}
+
+        //public int Delete(Department Entity)
+        //{
+        //    DbContext.Departments.Remove(Entity);
+        //    return DbContext.SaveChanges();
+        //} 
+        #endregion
+
+        public DepartmentRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
-            DbContext = dbContext;
-        }
-        public Department Get(int id)
-        {
-            //var department = DbContext.Departments.Local.Where(d => d.ID == id).FirstOrDefault();
-
-            //if (department == null)
-            //{
-            //    DbContext.Departments.Where(d => d.ID == id).FirstOrDefault();
-            //}
-
-            //return department;
-
-            return DbContext.Departments.Find(id);
-
+            
         }
 
 
-        public IEnumerable<Department> GetAll()
-        {
-            return DbContext.Departments.AsNoTracking().ToList();
-        }
 
-        public int Add(Department Entity)
-        {
-            DbContext.Departments.Add(Entity);
-            return DbContext.SaveChanges();
-        }
-
-        public int Update(Department Entity)
-        {
-            DbContext.Departments.Update(Entity);
-            return DbContext.SaveChanges();
-        }
-
-        public int Delete(Department Entity)
-        {
-            DbContext.Departments.Remove(Entity);
-            return DbContext.SaveChanges();
-        }
-
-
-        
     }
 }

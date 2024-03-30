@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Demo_DAL.Models
 {
-    public class Department
+    public class Department : ModelBase
     {
-        public int ID { get; set; }
 
         [Required(ErrorMessage ="code is reqyired !!")]
         public string Code { get; set; }
