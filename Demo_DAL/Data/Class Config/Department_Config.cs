@@ -18,6 +18,7 @@ namespace Demo_DAL.Data.Class_Config
             builder.HasKey(d=> d.ID);
             builder.Property(d=> d.ID).UseIdentityColumn(10,10);
 
+            builder.HasIndex(d=>d.Code).IsUnique();
             builder.Property(d => d.Code).HasColumnType("nvarchar")
                                         .HasMaxLength(30)
                                         .IsRequired();
