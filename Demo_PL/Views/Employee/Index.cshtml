@@ -25,7 +25,6 @@
                 @* <th>address</th> *@
                 <th>salary</th>
                 <th>Email</th>
-                <th>salary</th>
                  @* <th>PhoneNumber</th> *@
                  @* <th>HireDate</th> *@
                 <th>Gender</th>
@@ -43,7 +42,7 @@
                 <tr>
                     <td>@item.Name</td>
                     <td>@item.Age</td>
-                    <td>@item.Address</td>
+                    @* <td>@item.Address</td> *@
                     <td>@Html.DisplayFor(m=> item.Salary)</td>
                     <td>@Html.DisplayFor(m=>item.Email)</td>
                     @* <td>@item.PhoneNumber</td> *@
@@ -51,21 +50,8 @@
                     <td>@item.Gender</td>
                     @* <td>@item.EmpType</td> *@
                     <td>@Html.DisplayFor(m=>item.IsActive)</td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="details" asp-route-id="@item.ID" class="btn btn-warning">
-                            <i class="fas fa-eye"></i>details
-                        </a>
-                    </td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="edit" asp-route-id="@item.ID" class="btn btn-success">
-                            <i class="fas fa-edit"></i>edit
-                        </a>
-                    </td>
-                    <td>
-                        <a asp-controller="Employee" asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger">
-                            <i class="fas fa-trash"></i>Delete
-                        </a>
-                    </td>
+
+                    <partial name="_ButtonsCRUDPartial" model="@item.ID" />
                 </tr>
             }
 
