@@ -19,8 +19,15 @@ namespace Demo_PL.Controllers
 
 
         // /Employee/Index
+        [HttpGet]
         public IActionResult Index()
         {
+            // 1- viewdata
+            ViewData["Message"] = "Hello ViewData";
+
+            // 2- viewbag
+            ViewBag.message = "Hi ViewBag";
+
             var emp = Repository.GetAll();
             return View(emp);
         }
