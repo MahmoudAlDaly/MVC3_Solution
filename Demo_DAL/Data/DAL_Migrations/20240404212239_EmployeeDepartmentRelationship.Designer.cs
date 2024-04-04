@@ -4,14 +4,16 @@ using Demo_DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Demo_DAL.Data.DAL_Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240404212239_EmployeeDepartmentRelationship")]
+    partial class EmployeeDepartmentRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,6 +73,9 @@ namespace Demo_DAL.Data.DAL_Migrations
                     b.Property<int?>("Department_ID")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Department_NavID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -106,15 +111,21 @@ namespace Demo_DAL.Data.DAL_Migrations
 
                     b.HasIndex("Department_ID");
 
+                    b.HasIndex("Department_NavID");
+
                     b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("Demo_DAL.Models.Employee", b =>
                 {
-                    b.HasOne("Demo_DAL.Models.Department", "Department_Nav")
+                    b.HasOne("Demo_DAL.Models.Department", null)
                         .WithMany("Employees")
                         .HasForeignKey("Department_ID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Demo_DAL.Models.Department", "Department_Nav")
+                        .WithMany()
+                        .HasForeignKey("Department_NavID");
 
                     b.Navigation("Department_Nav");
                 });

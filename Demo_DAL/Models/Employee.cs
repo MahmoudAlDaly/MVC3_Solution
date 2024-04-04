@@ -58,5 +58,8 @@ namespace Demo_DAL.Models
         public Sex Gender { get; set; }
         public EmployeeType EmpType { get; set; }
 
+        public Department Department_Nav { get; set; }
+        public int? Department_ID { get; set; }
+
     }
 }

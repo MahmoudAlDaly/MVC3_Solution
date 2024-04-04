@@ -26,6 +26,11 @@ namespace Demo_DAL.Data.Class_Config
             builder.Property(d=> d.Name).HasColumnType("nvarchar")
                                         .HasMaxLength(30)
                                         .IsRequired();
+
+            builder.HasMany(d => d.Employees)
+                    .WithOne(e=> e.Department_Nav)
+                    .HasForeignKey(e=> e.Department_ID)
+                    .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
