@@ -40,8 +40,14 @@ namespace Demo_PL.Controllers
                 var count = Repository.Add(department);
                 if (count > 0)
                 {
-                    return RedirectToAction(nameof(Index));
+                    TempData["Message"] = "department is created";
                 }
+                else
+                {
+                    TempData["Message"] = "department is not created";
+                }
+
+                return RedirectToAction(nameof(Index));
             }
 
             return View(department);

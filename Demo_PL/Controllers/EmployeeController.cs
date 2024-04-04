@@ -45,8 +45,14 @@ namespace Demo_PL.Controllers
                 var count = Repository.Add(employee);
                 if (count > 0)
                 {
-                    return RedirectToAction(nameof(Index));
+                    TempData["Message"] = "Employee is created";
                 }
+                else
+                {
+                    TempData["Message"] = "Employee is not created";
+                }
+
+                return RedirectToAction(nameof(Index));
             }
 
             return View(employee);
