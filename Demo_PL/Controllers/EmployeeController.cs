@@ -9,11 +9,13 @@ namespace Demo_PL.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IEmployeeRepository Repository;
+        private readonly IEmployeeRepository Repo_Employee;
+        //private readonly IDepartmentRepository Repo_Department;
         private readonly IWebHostEnvironment Env;
-        public EmployeeController(IEmployeeRepository repository, IWebHostEnvironment env)
+        public EmployeeController(IEmployeeRepository repo_employee, IWebHostEnvironment env)
         {
-            Repository = repository;
+            Repo_Employee = repo_employee;
+            //Repo_Department = repo_department;
             Env = env;
         }
 
@@ -28,12 +30,13 @@ namespace Demo_PL.Controllers
             // 2- viewbag
             ViewBag.message = "Hi ViewBag";
 
-            var emp = Repository.GetAll();
+            var emp = Repo_Employee.GetAll();
             return View(emp);
         }
 
         public IActionResult Create()
         {
+            //ViewData["Departments"] = Repo_Department.GetAll();
             return View();
         }
 
@@ -42,7 +45,7 @@ namespace Demo_PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                var count = Repository.Add(employee);
+                var count = Repo_Employee.Add(employee);
                 if (count > 0)
                 {
                     TempData["Message"] = "Employee is created";
@@ -69,7 +72,7 @@ namespace Demo_PL.Controllers
             }
             else
             {
-                var employee = Repository.Get(id.Value);
+                var employee = Repo_Employee.Get(id.Value);
 
                 if (employee == null)
                 {
@@ -83,6 +86,8 @@ namespace Demo_PL.Controllers
         [HttpGet]
         public IActionResult Edit(string ViewName, int? id)
         {
+            //ViewData["Departments"] = Repo_Department.GetAll();
+
             return Details(id, "Edit");
         }
 
@@ -102,7 +107,7 @@ namespace Demo_PL.Controllers
 
             try
             {
-                Repository.Update(employee);
+                Repo_Employee.Update(employee);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -134,7 +139,7 @@ namespace Demo_PL.Controllers
         {
             try
             {
-                Repository.Delete(employee);
+                Repo_Employee.Delete(employee);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

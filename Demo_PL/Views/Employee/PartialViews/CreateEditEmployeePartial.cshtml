@@ -2,6 +2,13 @@
 
 @model Employee
 
+@inject IDepartmentRepository Repo_Departments
+
+@{
+    var departments = new SelectList(Repo_Departments.GetAll(), nameof(Department.ID), nameof(Department.Name));
+}
+
+
 <div class="form-group">
     <label class="col-form-label" asp-for="Name"></label>
     <input asp-for="Name" class="form-control" />
@@ -61,4 +68,11 @@
     <label class="col-form-label" asp-for="HireDate"></label>
     <input asp-for="HireDate" class="form-control" />
     <span asp-validation-for="HireDate" class="text-danger"></span>
+</div>
+
+<div>
+    <label class="col-form-label" asp-for="Department_Nav"> </label>
+    <select class="form-control" asp-for="Department_ID" asp-items="@departments">
+        <option value="@null"> -- Select Department -- </option>
+    </select>
 </div>

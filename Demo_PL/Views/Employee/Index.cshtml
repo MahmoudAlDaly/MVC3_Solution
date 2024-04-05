@@ -47,6 +47,7 @@
                 <th>Gender</th>
                 @* <th>EmpType</th> *@
                  <th>isActive</th>
+                 <th>Department</th>
                 <th>details</th>
                 <th>update</th>
                 <th>delete</th>
@@ -67,6 +68,7 @@
                     <td>@item.Gender</td>
                     @* <td>@item.EmpType</td> *@
                     <td>@Html.DisplayFor(m=>item.IsActive)</td>
+                    <td>@Html.DisplayFor(m=>item.Department_Nav.Name)</td>
 
                     <partial name="_ButtonsCRUDPartial" model="@item.ID" />
                 </tr>

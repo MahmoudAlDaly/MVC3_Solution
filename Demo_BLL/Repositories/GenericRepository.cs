@@ -39,7 +39,15 @@ namespace Demo_BLL.Repositories
 
         public IEnumerable<T> GetAll()
         {
-            return DbContext.Set<T>().AsNoTracking().ToList();
+            if (typeof(T) == typeof(Employee))
+            {
+                return (IEnumerable<T>) DbContext.Employees.Include(e=> e.Department_Nav).AsNoTracking().ToList();
+            }
+            else
+            {
+                return DbContext.Set<T>().AsNoTracking().ToList();
+            }
+            
         }
 
         public int Add(T Entity)

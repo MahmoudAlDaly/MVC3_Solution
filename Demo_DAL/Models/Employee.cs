@@ -29,7 +29,7 @@ namespace Demo_DAL.Models
     {
         [Required]
         [MaxLength(100,ErrorMessage = "Max Length 100 Char")]
-        [MinLength(5,ErrorMessage = "Max Length 2 Char")]
+        [MinLength(3,ErrorMessage = "min Length 2 Char")]
         public string Name { get; set; }
 
 
