@@ -29,6 +29,16 @@
 <a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Add New Employee</a>
 
 <br/>
+<div class="row justify-content-center align-items-center mt-5">
+    <form asp-action="Index" class="row col-8 offset-1">
+        <div class="col-8">
+            <input type="text" class="form-control" name="serachinput" placeholder="serach by name" />
+        </div>
+        <div class="col-4">
+            <input type="submit" value="Serach" class="btn btn-success"/>
+        </div>
+    </form>
+</div>
 <br/>
 
 @if (Model.Count() > 0)

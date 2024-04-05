@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Demo_PL.Controllers
 {
@@ -21,8 +23,8 @@ namespace Demo_PL.Controllers
 
 
         // /Employee/Index
-        [HttpGet]
-        public IActionResult Index()
+        //[HttpGet]
+        public IActionResult Index(string serachinput)
         {
             // 1- viewdata
             ViewData["Message"] = "Hello ViewData";
@@ -30,7 +32,18 @@ namespace Demo_PL.Controllers
             // 2- viewbag
             ViewBag.message = "Hi ViewBag";
 
-            var emp = Repo_Employee.GetAll();
+            var emp = Enumerable.Empty<Employee>();
+
+            if (string.IsNullOrEmpty(serachinput))
+            {
+                emp = Repo_Employee.GetAll();
+            }
+            else
+            {
+                emp = Repo_Employee.GetEmployeesByName(serachinput.ToLower());
+            }
+
+             
             return View(emp);
         }
 
