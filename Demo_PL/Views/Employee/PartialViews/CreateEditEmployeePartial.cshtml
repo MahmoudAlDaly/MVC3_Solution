@@ -1,9 +1,9 @@
 ﻿@model EmployeeViewModel
 
-@inject IDepartmentRepository Repo_Departments
+@inject IUnitOfWork UnitOfWork
 
 @{
-    var departments = new SelectList(Repo_Departments.GetAll(), nameof(Department.ID), nameof(Department.Name));
+    var departments = new SelectList(UnitOfWork.Urepository<Department>().GetAll(), nameof(Department.ID), nameof(Department.Name));
 }
 
 

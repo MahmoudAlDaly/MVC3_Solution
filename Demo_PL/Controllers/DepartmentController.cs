@@ -9,18 +9,21 @@ namespace Demo_PL.Controllers
 {
     public class DepartmentController : Controller
     {
-        private readonly IDepartmentRepository Repository;
+        private readonly IUnitOfWork UnitOfWork;
+
+        //private readonly IDepartmentRepository Repository;
         private readonly IWebHostEnvironment Env;
-        public DepartmentController(IDepartmentRepository repository, IWebHostEnvironment env)
+        public DepartmentController(IUnitOfWork unitOfWork, IWebHostEnvironment env)
         {
-            Repository = repository;
+            //Repository = repository;
+            UnitOfWork = unitOfWork;
             Env = env;
         }
 
         // /Department/index
         public IActionResult Index()
         {
-            var dep = Repository.GetAll();
+            var dep = UnitOfWork.Urepository<Department>().GetAll();
             return View(dep);
         }
 
@@ -37,7 +40,8 @@ namespace Demo_PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                var count = Repository.Add(department);
+                UnitOfWork.Urepository<Department>().Add(department);
+                var count = UnitOfWork.Complete();
                 if (count > 0)
                 {
                     TempData["Message"] = "department is created";
@@ -64,7 +68,7 @@ namespace Demo_PL.Controllers
             }
             else
             {
-                var department = Repository.Get(id.Value);
+                var department = UnitOfWork.Urepository<Department>().Get(id.Value);
 
                 if (department == null)
                 {
@@ -97,8 +101,8 @@ namespace Demo_PL.Controllers
 
             try
             {
-                Repository.Update(department);
-
+                UnitOfWork.Urepository<Department>().Update(department);
+                UnitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -129,7 +133,8 @@ namespace Demo_PL.Controllers
         {
             try
             {
-                Repository.Delete(department);
+                UnitOfWork.Urepository<Department>().Delete(department);
+                UnitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

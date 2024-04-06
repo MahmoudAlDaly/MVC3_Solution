@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Demo_BLL.Interfaces;
+using Demo_BLL.Repositories;
 using Demo_DAL.Models;
 using Demo_PL.ViewModels;
 using Microsoft.AspNetCore.Hosting;
@@ -13,18 +14,21 @@ namespace Demo_PL.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IMapper Mapper;
-        private readonly IEmployeeRepository Repo_Employee;
+        private readonly IUnitOfWork UnitOfWork;
+
+        //private readonly IEmployeeRepository Repo_Employee;
         //private readonly IDepartmentRepository Repo_Department;
+        private readonly IMapper Mapper;
         private readonly IWebHostEnvironment Env;
 
 
-        public EmployeeController(IMapper mapper,IEmployeeRepository repo_employee, IWebHostEnvironment env)
+        public EmployeeController(IUnitOfWork unitOfWork,IMapper mapper, IWebHostEnvironment env)
         {
             
-            Repo_Employee = repo_employee;
-            Mapper = mapper;
             //Repo_Department = repo_department;
+            //Repo_Employee = repo_employee;
+            UnitOfWork = unitOfWork;
+            Mapper = mapper;
             Env = env;
         }
 
@@ -41,13 +45,15 @@ namespace Demo_PL.Controllers
 
             var emp = Enumerable.Empty<Employee>();
 
+            var emp_repo = UnitOfWork.Urepository<Employee>() as EmployeeRepository;
+
             if (string.IsNullOrEmpty(serachinput))
             {
-                emp = Repo_Employee.GetAll();
+                emp = emp_repo.GetAll();
             }
             else
             {
-                emp = Repo_Employee.GetEmployeesByName(serachinput.ToLower());
+                emp = emp_repo.GetEmployeesByName(serachinput.ToLower());
             }
 
              var mappedEmp = Mapper.Map<IEnumerable<Employee>,IEnumerable<EmployeeViewModel>>(emp);
@@ -68,7 +74,9 @@ namespace Demo_PL.Controllers
             {
                 var mappedEmp = Mapper.Map<EmployeeViewModel,Employee>(employeeVM);
 
-                var count = Repo_Employee.Add(mappedEmp);
+                UnitOfWork.Urepository<Employee>().Add(mappedEmp);
+
+                var count = UnitOfWork.Complete();
                 if (count > 0)
                 {
                     TempData["Message"] = "Employee is created";
@@ -95,7 +103,7 @@ namespace Demo_PL.Controllers
             }
             else
             {
-                var employee = Repo_Employee.Get(id.Value);
+                var employee = UnitOfWork.Urepository<Employee>().Get(id.Value);
 
                 var mappedEmp = Mapper.Map<Employee, EmployeeViewModel>(employee);
 
@@ -134,8 +142,8 @@ namespace Demo_PL.Controllers
             try
             {
                 var mappedEmp = Mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                Repo_Employee.Update(mappedEmp);
-
+                UnitOfWork.Urepository<Employee>().Update(mappedEmp);
+                UnitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -167,7 +175,8 @@ namespace Demo_PL.Controllers
             try
             {
                 var mappedEmp = Mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                Repo_Employee.Delete(mappedEmp);
+                UnitOfWork.Urepository<Employee>().Delete(mappedEmp);
+                UnitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

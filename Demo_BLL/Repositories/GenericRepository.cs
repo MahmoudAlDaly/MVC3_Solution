@@ -50,22 +50,22 @@ namespace Demo_BLL.Repositories
             
         }
 
-        public int Add(T Entity)
+        public void Add(T Entity)
         {
             DbContext.Set<T>().Add(Entity);
-            return DbContext.SaveChanges();
+            //return DbContext.SaveChanges();
         }
 
-        public int Update(T Entity)
+        public void Update(T Entity)
         {
             DbContext.Set<T>().Update(Entity);
-            return DbContext.SaveChanges();
+            //return DbContext.SaveChanges();
         }
 
-        public int Delete(T Entity)
+        public void Delete(T Entity)
         {
             DbContext.Set<T>().Remove(Entity);
-            return DbContext.SaveChanges();
+            //return DbContext.SaveChanges();
         }
     }
 }
