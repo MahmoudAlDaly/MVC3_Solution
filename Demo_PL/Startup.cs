@@ -2,6 +2,7 @@ using Demo_BLL.Interfaces;
 using Demo_BLL.Repositories;
 using Demo_DAL.Data;
 using Demo_DAL.Models;
+using Demo_PL.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -37,6 +38,8 @@ namespace Demo_PL
 
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+            services.AddAutoMapper(m=> m.AddProfile(new MappingPorfiles() ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

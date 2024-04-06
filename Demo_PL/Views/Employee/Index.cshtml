@@ -1,10 +1,10 @@
-﻿@model IEnumerable<Employee>
+﻿@model IEnumerable<EmployeeViewModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<div class="alert alert-info">
+@* <div class="alert alert-info">
 
 @ViewData["Message"]
 
@@ -12,7 +12,7 @@
 
 <div class="alert alert-dark">
     @ViewBag.Message
-</div>
+</div> *@
 
 @if (!string.IsNullOrEmpty(TempData["Message"] as string))
 {

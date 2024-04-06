@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Demo_DAL.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+using System;
 
-
-namespace Demo_DAL.Models
+namespace Demo_PL.ViewModels
 {
     public enum Sex : byte
     {
-        [EnumMember(Value ="Male")]
+        [EnumMember(Value = "Male")]
         Male = 1,
 
-        [EnumMember(Value ="Female")]
+        [EnumMember(Value = "Female")]
         Female = 2,
     }
 
@@ -27,34 +22,46 @@ namespace Demo_DAL.Models
         [EnumMember(Value = "Part Time")]
         PartTime = 2,
     }
-    public class Employee :ModelBase
+    public class EmployeeViewModel
     {
+
+        public int ID { get; set; }
+
         [Required]
-        [MaxLength(100)]
+        [MaxLength(100, ErrorMessage = "Max Length 100 Char")]
+        [MinLength(3, ErrorMessage = "min Length 2 Char")]
+
         public string Name { get; set; }
 
 
+        [Range(22, 30)]
         public int Age { get; set; }
         public string Address { get; set; }
 
-        public decimal Salary {  get; set; }
+        [DataType(DataType.Currency)]
+        public decimal Salary { get; set; }
 
+        [Display(Name = "Is Active")]
         public bool IsActive { get; set; }
 
+        [EmailAddress]
         public string Email { get; set; }
 
-        
+        [Display(Name = "Phone Number")]
+        [Phone]
         public string PhoneNumber { get; set; }
 
+        [Display(Name = "Hire Date")]
         public DateTime HireDate { get; set; }
-        public DateTime CreatioDate { get; set; } = DateTime.Now;
-        public bool IsDeleted { get; set; } = false;
+        //public DateTime CreatioDate { get; set; } = DateTime.Now;
+        //public bool IsDeleted { get; set; } = false;
 
         public Sex Gender { get; set; }
         public EmployeeType EmpType { get; set; }
 
         public Department Department_Nav { get; set; }
         public int? Department_ID { get; set; }
+
 
     }
 }
