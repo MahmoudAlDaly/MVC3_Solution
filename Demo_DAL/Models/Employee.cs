@@ -45,7 +45,7 @@ namespace Demo_DAL.Models
 
         
         public string PhoneNumber { get; set; }
-
+        public string ImageName { get; set; }
         public DateTime HireDate { get; set; }
         public DateTime CreatioDate { get; set; } = DateTime.Now;
         public bool IsDeleted { get; set; } = false;

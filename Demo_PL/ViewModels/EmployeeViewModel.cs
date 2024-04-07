@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace Demo_PL.ViewModels
 {
@@ -56,6 +57,8 @@ namespace Demo_PL.ViewModels
         //public DateTime CreatioDate { get; set; } = DateTime.Now;
         //public bool IsDeleted { get; set; } = false;
 
+        public IFormFile image { get; set; }
+        public string ImageName { get; set; }
         public Sex Gender { get; set; }
         public EmployeeType EmpType { get; set; }
 

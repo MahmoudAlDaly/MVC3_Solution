@@ -13,6 +13,7 @@ namespace Demo_BLL.Repositories
     public class UnitOfWork : IUnitOfWork 
     {
         private readonly ApplicationDbContext DbContext;
+
         private Hashtable Repositories;
 
         public IEmployeeRepository UEmployeeRepository { get ; set ; }
@@ -21,6 +22,7 @@ namespace Demo_BLL.Repositories
         public UnitOfWork(ApplicationDbContext dbContext)
         {
             DbContext = dbContext;
+            Repositories = new Hashtable();
             UEmployeeRepository = new EmployeeRepository(DbContext);
             UDepartmentRepository = new DepartmentRepository(DbContext);
         }
@@ -38,6 +40,7 @@ namespace Demo_BLL.Repositories
         public IGenericRepository<T> Urepository<T>() where T : ModelBase
         {
             var key = typeof(T).Name;
+
             if (!Repositories.ContainsKey(key))
             {
                 if (key == nameof(Employee))

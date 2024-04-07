@@ -2,6 +2,7 @@
 using Demo_BLL.Interfaces;
 using Demo_BLL.Repositories;
 using Demo_DAL.Models;
+using Demo_PL.Helpers;
 using Demo_PL.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -72,13 +73,17 @@ namespace Demo_PL.Controllers
         {
             if (ModelState.IsValid)
             {
+                employeeVM.ImageName = DocumentSettings.UploadFile(employeeVM.image, "Images");
+
                 var mappedEmp = Mapper.Map<EmployeeViewModel,Employee>(employeeVM);
 
                 UnitOfWork.Urepository<Employee>().Add(mappedEmp);
 
                 var count = UnitOfWork.Complete();
+
                 if (count > 0)
                 {
+                    
                     TempData["Message"] = "Employee is created";
                 }
                 else
