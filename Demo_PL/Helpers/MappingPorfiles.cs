@@ -9,7 +9,9 @@ namespace Demo_PL.Helpers
         public MappingPorfiles()
         {
             CreateMap<EmployeeViewModel, Employee>().ReverseMap();
-                //.ForMember(d => d.Name, o => o.MapFrom(s => s.EmpType));
+            //.ForMember(d => d.Name, o => o.MapFrom(s => s.EmpType));
+
+            CreateMap<EmplyeeResponseViewModel, Employee>().ReverseMap();
         }
     }
 }

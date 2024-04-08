@@ -110,12 +110,16 @@ namespace Demo_PL.Controllers
             {
                 var employee = UnitOfWork.Urepository<Employee>().Get(id.Value);
 
-                var mappedEmp = Mapper.Map<Employee, EmployeeViewModel>(employee);
+                var mappedEmp = Mapper.Map<Employee, EmplyeeResponseViewModel>(employee);
 
 
                 if (employee == null)
                 {
                     return NotFound();    //404
+                }
+                if (ViewName.Equals("Delete",StringComparison.OrdinalIgnoreCase))
+                {
+                    TempData["ImageName"] = employee.ImageName;
                 }
                 return View(ViewName, mappedEmp);
             }
@@ -175,14 +179,21 @@ namespace Demo_PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(EmployeeViewModel employeeVM)
+        public IActionResult Delete(EmplyeeResponseViewModel employeeVM)
         {
             try
             {
-                var mappedEmp = Mapper.Map<EmployeeViewModel, Employee>(employeeVM);
+                employeeVM.ImageName = TempData["ImageName"] as string;
+                var mappedEmp = Mapper.Map<EmplyeeResponseViewModel, Employee>(employeeVM);
                 UnitOfWork.Urepository<Employee>().Delete(mappedEmp);
-                UnitOfWork.Complete();
-                return RedirectToAction(nameof(Index));
+                int count =UnitOfWork.Complete();
+                if (count > 0)
+                {
+                    DocumentSettings.DeleteFile(employeeVM.ImageName,"images");
+                    return RedirectToAction(nameof(Index)); 
+                }
+                return View(employeeVM);
+
             }
             catch (Exception ex)
             {

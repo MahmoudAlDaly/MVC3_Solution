@@ -1,6 +1,10 @@
-﻿@model EmployeeViewModel
+﻿@model EmplyeeResponseViewModel
 
 <div>
+
+    <div>
+        <img src="~/Files/Images/@Model.ImageName" width="100" class="img-fluid rounded-circle" alt="Employee Image" />
+    </div>
 
     <div class="form-group">
         <label class="col-form-label" asp-for="Name"></label>
