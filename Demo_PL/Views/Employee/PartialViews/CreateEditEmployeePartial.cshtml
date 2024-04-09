@@ -3,7 +3,7 @@
 @inject IUnitOfWork UnitOfWork
 
 @{
-    var departments = new SelectList(UnitOfWork.Urepository<Department>().GetAll(), nameof(Department.ID), nameof(Department.Name));
+    var departments = new SelectList(await UnitOfWork.Urepository<Department>().GetAllAsync(), nameof(Department.ID), nameof(Department.Name));
 }
 
 

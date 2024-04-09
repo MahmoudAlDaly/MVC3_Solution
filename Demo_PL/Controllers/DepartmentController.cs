@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Threading.Tasks;
 
 namespace Demo_PL.Controllers
 {
@@ -23,7 +24,7 @@ namespace Demo_PL.Controllers
         // /Department/index
         public IActionResult Index()
         {
-            var dep = UnitOfWork.Urepository<Department>().GetAll();
+            var dep = UnitOfWork.Urepository<Department>().GetAllAsync();
             return View(dep);
         }
 
@@ -36,12 +37,12 @@ namespace Demo_PL.Controllers
 
         // /Department/Create
         [HttpPost]  
-        public IActionResult Create(Department department)
+        public async Task<IActionResult> Create(Department department)
         {
             if (ModelState.IsValid)
             {
                 UnitOfWork.Urepository<Department>().Add(department);
-                var count = UnitOfWork.Complete();
+                var count = await UnitOfWork.Complete();
                 if (count > 0)
                 {
                     TempData["Message"] = "department is created";
@@ -60,7 +61,7 @@ namespace Demo_PL.Controllers
         // /Department/Details
         // /Department/Details/10
         [HttpGet]
-        public IActionResult Details(int? id,string ViewName = "Details")
+        public async Task<IActionResult> Details(int? id,string ViewName = "Details")
         {
             if (!id.HasValue)
             {
@@ -68,7 +69,7 @@ namespace Demo_PL.Controllers
             }
             else
             {
-                var department = UnitOfWork.Urepository<Department>().Get(id.Value);
+                var department = await UnitOfWork.Urepository<Department>().GetAsync(id.Value);
 
                 if (department == null)
                 {
@@ -80,14 +81,14 @@ namespace Demo_PL.Controllers
 
 
         [HttpGet]
-        public IActionResult Edit(string ViewName,int? id)
+        public async Task<IActionResult> Edit(string ViewName,int? id)
         {
-            return Details(id, "Edit");
+            return await Details(id, "Edit");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute]int id,Department department)
+        public async Task<IActionResult> Edit([FromRoute]int id,Department department)
         {
             if (id != department.ID)
             {
@@ -102,7 +103,7 @@ namespace Demo_PL.Controllers
             try
             {
                 UnitOfWork.Urepository<Department>().Update(department);
-                UnitOfWork.Complete();
+                await UnitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -123,9 +124,9 @@ namespace Demo_PL.Controllers
 
 
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            return Details(id, "Delete");
+            return await Details(id, "Delete");
         }
 
         [HttpPost]

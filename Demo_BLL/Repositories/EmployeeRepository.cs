@@ -28,5 +28,10 @@ namespace Demo_BLL.Repositories
         {
             return DbContext.Employees.Where(e => e.Name.ToLower().Contains(name));
         }
+
+        public override async Task<IEnumerable<Employee>> GetAllAsync()
+        {
+            return await DbContext.Set<Employee>().Include(e=> e.Department_Nav).AsNoTracking().ToListAsync();
+        }
     }
 }

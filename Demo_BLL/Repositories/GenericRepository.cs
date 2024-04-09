@@ -19,7 +19,9 @@ namespace Demo_BLL.Repositories
         {
             DbContext = dbContext;
         }
-        public T Get(int id)
+
+
+        public async Task<T> GetAsync(int id)
         {
             #region MyRegion
             //var department = DbContext.Departments.Local.Where(d => d.ID == id).FirstOrDefault();
@@ -32,20 +34,20 @@ namespace Demo_BLL.Repositories
             //return department; 
             #endregion
 
-            return DbContext.Set<T>().Find(id);
+            return await DbContext.FindAsync<T>(id);
 
         }
 
 
-        public IEnumerable<T> GetAll()
+        public virtual async Task <IEnumerable<T>> GetAllAsync()
         {
             if (typeof(T) == typeof(Employee))
             {
-                return (IEnumerable<T>) DbContext.Employees.Include(e=> e.Department_Nav).AsNoTracking().ToList();
+                return (IEnumerable<T>) DbContext.Employees.Include(e=> e.Department_Nav).AsNoTracking().ToListAsync();
             }
             else
             {
-                return DbContext.Set<T>().AsNoTracking().ToList();
+                return await DbContext.Set<T>().AsNoTracking().ToListAsync();
             }
             
         }

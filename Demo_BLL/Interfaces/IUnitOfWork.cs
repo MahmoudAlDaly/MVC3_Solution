@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Demo_BLL.Interfaces
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IAsyncDisposable
     {
         //public IEmployeeRepository UEmployeeRepository { get; set; }
         //public IGenericRepository<Department> UDepartmentRepository { get; set; }
 
         IGenericRepository<T> Urepository<T>() where T : ModelBase;
 
-        int Complete();
+        Task<int> Complete();
     }
 }

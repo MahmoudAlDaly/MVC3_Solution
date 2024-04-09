@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Demo_PL.Controllers
 {
@@ -36,7 +37,7 @@ namespace Demo_PL.Controllers
 
         // /Employee/Index
         //[HttpGet]
-        public IActionResult Index(string serachinput)
+        public async Task<IActionResult> Index(string serachinput)
         {
             // 1- viewdata
             //ViewData["Message"] = "Hello ViewData";
@@ -50,7 +51,7 @@ namespace Demo_PL.Controllers
 
             if (string.IsNullOrEmpty(serachinput))
             {
-                emp = emp_repo.GetAll();
+                emp = await emp_repo.GetAllAsync();
             }
             else
             {
@@ -69,17 +70,17 @@ namespace Demo_PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(EmployeeViewModel employeeVM)
+        public async Task<IActionResult> Create(EmployeeViewModel employeeVM)
         {
             if (ModelState.IsValid)
             {
-                employeeVM.ImageName = DocumentSettings.UploadFile(employeeVM.image, "Images");
+                employeeVM.ImageName = await DocumentSettings.UploadFile(employeeVM.image, "Images");
 
                 var mappedEmp = Mapper.Map<EmployeeViewModel,Employee>(employeeVM);
 
                 UnitOfWork.Urepository<Employee>().Add(mappedEmp);
 
-                var count = UnitOfWork.Complete();
+                var count = await UnitOfWork.Complete();
 
                 if (count > 0)
                 {
@@ -100,7 +101,7 @@ namespace Demo_PL.Controllers
         // /employee/Details
         // /employee/Details/10
         //[HttpGet]
-        public IActionResult Details(int? id, string ViewName = "Details")
+        public async Task<IActionResult> Details(int? id, string ViewName = "Details")
         {
             if (!id.HasValue)
             {
@@ -108,7 +109,7 @@ namespace Demo_PL.Controllers
             }
             else
             {
-                var employee = UnitOfWork.Urepository<Employee>().Get(id.Value);
+                var employee = await UnitOfWork.Urepository<Employee>().GetAsync(id.Value);
 
                 var mappedEmp = Mapper.Map<Employee, EmplyeeResponseViewModel>(employee);
 
@@ -127,11 +128,11 @@ namespace Demo_PL.Controllers
 
 
         [HttpGet]
-        public IActionResult Edit(string ViewName, int? id)
+        public async Task<IActionResult> Edit(string ViewName, int? id)
         {
             //ViewData["Departments"] = Repo_Department.GetAll();
 
-            return Details(id, "Edit");
+            return await Details(id, "Edit");
         }
 
         [HttpPost]
@@ -173,20 +174,20 @@ namespace Demo_PL.Controllers
 
 
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            return Details(id, "Delete");
+            return await Details(id, "Delete");
         }
 
         [HttpPost]
-        public IActionResult Delete(EmplyeeResponseViewModel employeeVM)
+        public async Task<IActionResult> Delete(EmplyeeResponseViewModel employeeVM)
         {
             try
             {
                 employeeVM.ImageName = TempData["ImageName"] as string;
                 var mappedEmp = Mapper.Map<EmplyeeResponseViewModel, Employee>(employeeVM);
                 UnitOfWork.Urepository<Employee>().Delete(mappedEmp);
-                int count =UnitOfWork.Complete();
+                int count = await UnitOfWork.Complete();
                 if (count > 0)
                 {
                     DocumentSettings.DeleteFile(employeeVM.ImageName,"images");

@@ -27,14 +27,14 @@ namespace Demo_BLL.Repositories
             UDepartmentRepository = new DepartmentRepository(DbContext);
         }
 
-        public int Complete()
+        public async Task<int> Complete()
         {
-           return DbContext.SaveChanges();
+           return await DbContext.SaveChangesAsync();
         }
 
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
-            DbContext.Dispose();
+            await DbContext.DisposeAsync();
         }
 
         public IGenericRepository<T> Urepository<T>() where T : ModelBase
