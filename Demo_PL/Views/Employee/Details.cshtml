@@ -1,0 +1,19 @@
+﻿@model EmplyeeResponseViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Employee Details</h1>
+
+<br />
+<br />
+
+<div>
+    <partial name="PartialViews/DeleteDetailsEmployeePartial" />
+
+    <input type="submit" value="Create" class="btn btn-primary" /> |
+    <a asp-action="Index" class="btn btn-dark">Back To List</a>
+
+    @* <a asp-controller="Employee" asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-primary">Edit</a> |
+    <a asp-controller="Employee" asp-action="Index" class="btn btn-dark">Back To List</a> *@
+</div>
