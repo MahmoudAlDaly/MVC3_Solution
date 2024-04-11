@@ -6,6 +6,7 @@ using Demo_PL.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,7 +42,30 @@ namespace Demo_PL
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddAutoMapper(m=> m.AddProfile(new MappingPorfiles() ));
+            services.AddAutoMapper(m=> m.AddProfile(new MappingPorfiles()));
+
+            //services.AddScoped<UserManager<ApplicationUser>>();
+            //services.AddScoped<SignInManager<ApplicationUser>>();
+            //services.AddScoped<RoleManager<IdentityRole>>();
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(IdentityOptions =>
+            {
+                IdentityOptions.Password.RequiredUniqueChars = 2;
+                IdentityOptions.Password.RequireDigit = true;
+                IdentityOptions.Password.RequireNonAlphanumeric = true;
+                IdentityOptions.Password.RequireUppercase = true;
+                IdentityOptions.Password.RequireLowercase = true;
+                IdentityOptions.Password.RequiredLength = 5;
+
+                IdentityOptions.Lockout.AllowedForNewUsers = true;
+                IdentityOptions.Lockout.MaxFailedAccessAttempts = 5;
+                IdentityOptions.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(5);
+
+                //IdentityOptions.User.AllowedUserNameCharacters = "1-9 a-z";
+                IdentityOptions.User.RequireUniqueEmail = true;
+
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
